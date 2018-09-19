@@ -422,6 +422,17 @@ class Format {
         return strip_tags($decode?Format::htmldecode($var):$var);
     }
 
+    // Strip all Emoticon/Emoji characters until we support them
+    function strip_emoticons($text) {
+        return preg_replace(array(
+                '/[\x{1F600}-\x{1F64F}]/u', # Emoticons
+                '/[\x{1F300}-\x{1F5FF}]/u', # Miscellaneous/Pictographs
+                '/[\x{1F680}-\x{1F6FF}]/u', # Transport/Map Symbols
+                '/[\x{2600}-\x{26FF}]/u',   # Miscellaneous Symbols
+                '/[\x{2700}-\x{27BF}]/u'    # Dingbats
+            ), '', $text);
+    }
+
     //make urls clickable. Mainly for display
     function clickableurls($text, $target='_blank') {
         global $ost;
